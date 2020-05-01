@@ -21,6 +21,9 @@ ENV STATIC_URL ${STATIC_URL:-/static/}
 ARG SECRET_KEY=${SECRET_KEY}
 ENV SECRET_KEY ${SECRET_KEY}
 
+ARG DATABASE_URL=${DATABASE_URL}
+ENV DATABASE_URL ${DATABASE_URL}
+
 RUN groupadd -r saleor && useradd -r -g saleor saleor
 
 RUN apt-get update \
@@ -42,7 +45,7 @@ COPY --from=build-python /usr/local/bin/ /usr/local/bin/
 WORKDIR /app
 
 RUN SECRET_KEY=${SECRET_KEY} STATIC_URL=${STATIC_URL} python3 manage.py collectstatic --no-input
-RUN SECRET_KEY=${SECRET_KEY} python3 manage.py migrate
+RUN SECRET_KEY=${SECRET_KEY} DATABASE_URL=${DATABASE_URL} python3 manage.py migrate
 
 RUN mkdir -p /app/media /app/static \
   && chown -R saleor:saleor /app/

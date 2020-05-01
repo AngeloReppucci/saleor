@@ -8,15 +8,18 @@ RUN apt-get -y update \
   && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-COPY requirements_dev.txt /app/
+COPY requirements.txt /app/
 WORKDIR /app
-RUN pip install -r requirements_dev.txt
+RUN pip install -r requirements.txt
 
 ### Final image
 FROM python:3.8-slim
 
 ARG STATIC_URL
 ENV STATIC_URL ${STATIC_URL:-/static/}
+
+ARG SECRET_KEY=${SECRET_KEY}
+ENV SECRET_KEY ${SECRET_KEY}
 
 RUN groupadd -r saleor && useradd -r -g saleor saleor
 
@@ -38,7 +41,7 @@ COPY --from=build-python /usr/local/lib/python3.8/site-packages/ /usr/local/lib/
 COPY --from=build-python /usr/local/bin/ /usr/local/bin/
 WORKDIR /app
 
-RUN SECRET_KEY=dummy STATIC_URL=${STATIC_URL} python3 manage.py collectstatic --no-input
+RUN SECRET_KEY=${SECRET_KEY} STATIC_URL=${STATIC_URL} python3 manage.py collectstatic --no-input
 
 RUN mkdir -p /app/media /app/static \
   && chown -R saleor:saleor /app/

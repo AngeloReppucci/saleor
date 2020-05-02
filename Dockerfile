@@ -56,4 +56,4 @@ ENV PYTHONUNBUFFERED 1
 ENV PROCESSES 4
 
 ENTRYPOINT ["entrypoint.sh"] 
-CMD ["uwsgi", "--ini", "/app/saleor/wsgi/uwsgi.ini"]
+

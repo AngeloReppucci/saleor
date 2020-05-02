@@ -1,3 +1,3 @@
 #!/bin/sh
-python manage.py migrate --noinput
-exec "$@"
+python3 manage.py migrate --noinput
+uwsgi --ini /app/saleor/wsgi/uwsgi.ini

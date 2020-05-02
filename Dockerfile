@@ -55,5 +55,5 @@ ENV PORT 8000
 ENV PYTHONUNBUFFERED 1
 ENV PROCESSES 4
 
-ENTRYPOINT ["entrypoint.sh"] 
+ENTRYPOINT ["/app/entrypoint.sh"] 
 

@@ -55,5 +55,5 @@ ENV PORT 8000
 ENV PYTHONUNBUFFERED 1
 ENV PROCESSES 4
 
-ENTRYPOINT [ "python3", "manage.py" "migrate" ] 
+ENTRYPOINT [ "python3", "manage.py", "migrate" ] 
 CMD ["uwsgi", "--ini", "/app/saleor/wsgi/uwsgi.ini"]

@@ -45,12 +45,14 @@ COPY --from=build-python /usr/local/bin/ /usr/local/bin/
 WORKDIR /app
 
 RUN mkdir -p /app/media /app/static && chown -R saleor:saleor /app/
-RUN chmod +x entrypoint.sh
+RUN sed -i 's/\r//' /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 8000
 ENV PORT 8000
 ENV PYTHONUNBUFFERED 1
 ENV PROCESSES 4
 
-CMD ["sh", "/app/entrypoint.sh"] 
+ENTRYPOINT ["sh", "/app/entrypoint.sh"]
+CMD ["uwsgi", "--ini", "/app/saleor/wsgi/uwsgi.ini"]
 

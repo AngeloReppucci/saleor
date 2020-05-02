@@ -45,7 +45,7 @@ COPY --from=build-python /usr/local/bin/ /usr/local/bin/
 WORKDIR /app
 
 RUN SECRET_KEY=${SECRET_KEY} STATIC_URL=${STATIC_URL} python3 manage.py collectstatic --no-input
-RUN SECRET_KEY=${SECRET_KEY} DATABASE_URL=${DATABASE_URL} python3 manage.py migrate --no-input
+
 
 RUN mkdir -p /app/media /app/static \
   && chown -R saleor:saleor /app/
@@ -55,4 +55,5 @@ ENV PORT 8000
 ENV PYTHONUNBUFFERED 1
 ENV PROCESSES 4
 
+ENTRYPOINT [ "python3", "manage.py" "migrate" ] 
 CMD ["uwsgi", "--ini", "/app/saleor/wsgi/uwsgi.ini"]
